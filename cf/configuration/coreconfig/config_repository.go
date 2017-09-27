@@ -81,6 +81,7 @@ type Reader interface {
 	UserEmail() string
 	IsLoggedIn() bool
 	IsSSLDisabled() bool
+	IsProxyNTLM() bool
 	IsMinAPIVersion(semver.Version) bool
 	IsMinCLIVersion(string) bool
 	MinCLIVersion() string
@@ -115,6 +116,7 @@ type ReadWriter interface {
 	SetUAAOAuthClientSecret(string)
 	SetSSHOAuthClient(string)
 	SetRefreshToken(string)
+	SetProxyNTLM(bool)
 	SetOrganizationFields(models.OrganizationFields)
 	SetSpaceFields(models.SpaceFields)
 	SetSSLDisabled(bool)
@@ -327,6 +329,13 @@ func (c *ConfigRepository) IsSSLDisabled() (isSSLDisabled bool) {
 	return
 }
 
+func (c *ConfigRepository) IsProxyNTLM() (isProxyNTLM bool) {
+	c.read(func() {
+		isProxyNTLM = c.data.ProxyNTLM
+	})
+	return
+}
+
 // SetCLIVersion should only be used in testing
 func (c *ConfigRepository) SetCLIVersion(v string) {
 	c.CFCLIVersion = v
@@ -511,6 +520,12 @@ func (c *ConfigRepository) SetSSHOAuthClient(clientID string) {
 func (c *ConfigRepository) SetRefreshToken(token string) {
 	c.write(func() {
 		c.data.RefreshToken = token
+	})
+}
+
+func (c *ConfigRepository) SetProxyNTLM(proxyNTLM bool) {
+	c.write(func() {
+		c.data.ProxyNTLM = proxyNTLM
 	})
 }
 

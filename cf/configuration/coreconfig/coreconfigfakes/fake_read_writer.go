@@ -136,6 +136,12 @@ type FakeReadWriter struct {
 	isSSLDisabledReturns     struct {
 		result1 bool
 	}
+	IsProxyNTLMStub        func() bool
+	isProxyNTLMMutex       sync.RWMutex
+	isProxyNTLMArgsForCall []struct{}
+	isProxyNTLMReturns     struct {
+		result1 bool
+	}
 	IsMinAPIVersionStub        func(semver.Version) bool
 	isMinAPIVersionMutex       sync.RWMutex
 	isMinAPIVersionArgsForCall []struct {
@@ -281,6 +287,11 @@ type FakeReadWriter struct {
 	SetSSLDisabledStub        func(bool)
 	setSSLDisabledMutex       sync.RWMutex
 	setSSLDisabledArgsForCall []struct {
+		arg1 bool
+	}
+	SetProxyNTLMStub        func(bool)
+	setProxyNTLMMutex       sync.RWMutex
+	setProxyNTLMArgsForCall []struct {
 		arg1 bool
 	}
 	SetAsyncTimeoutStub        func(uint)
@@ -843,6 +854,31 @@ func (fake *FakeReadWriter) IsSSLDisabledCallCount() int {
 func (fake *FakeReadWriter) IsSSLDisabledReturns(result1 bool) {
 	fake.IsSSLDisabledStub = nil
 	fake.isSSLDisabledReturns = struct {
+		result1 bool
+	}{result1}
+}
+
+func (fake *FakeReadWriter) IsProxyNTLM() bool {
+	fake.isProxyNTLMMutex.Lock()
+	fake.isProxyNTLMArgsForCall = append(fake.isProxyNTLMArgsForCall, struct{}{})
+	fake.recordInvocation("IsProxyNTLM", []interface{}{})
+	fake.isProxyNTLMMutex.Unlock()
+	if fake.IsProxyNTLMStub != nil {
+		return fake.IsProxyNTLMStub()
+	} else {
+		return fake.isProxyNTLMReturns.result1
+	}
+}
+
+func (fake *FakeReadWriter) IsProxyNTLMCallCount() int {
+	fake.isProxyNTLMMutex.RLock()
+	defer fake.isProxyNTLMMutex.RUnlock()
+	return len(fake.isProxyNTLMArgsForCall)
+}
+
+func (fake *FakeReadWriter) IsProxyNTLMReturns(result1 bool) {
+	fake.IsProxyNTLMStub = nil
+	fake.isProxyNTLMReturns = struct {
 		result1 bool
 	}{result1}
 }
@@ -1513,6 +1549,30 @@ func (fake *FakeReadWriter) SetSSLDisabledArgsForCall(i int) bool {
 	return fake.setSSLDisabledArgsForCall[i].arg1
 }
 
+func (fake *FakeReadWriter) SetProxyNTLM(arg1 bool) {
+	fake.setProxyNTLMMutex.Lock()
+	fake.setProxyNTLMArgsForCall = append(fake.setProxyNTLMArgsForCall, struct {
+		arg1 bool
+	}{arg1})
+	fake.recordInvocation("SetProxyNTLM", []interface{}{arg1})
+	fake.setProxyNTLMMutex.Unlock()
+	if fake.SetProxyNTLMStub != nil {
+		fake.SetProxyNTLMStub(arg1)
+	}
+}
+
+func (fake *FakeReadWriter) SetProxyNTLMCallCount() int {
+	fake.setProxyNTLMMutex.RLock()
+	defer fake.setProxyNTLMMutex.RUnlock()
+	return len(fake.setProxyNTLMArgsForCall)
+}
+
+func (fake *FakeReadWriter) SetProxyNTLMArgsForCall(i int) bool {
+	fake.setProxyNTLMMutex.RLock()
+	defer fake.setProxyNTLMMutex.RUnlock()
+	return fake.setProxyNTLMArgsForCall[i].arg1
+}
+
 func (fake *FakeReadWriter) SetAsyncTimeout(arg1 uint) {
 	fake.setAsyncTimeoutMutex.Lock()
 	fake.setAsyncTimeoutArgsForCall = append(fake.setAsyncTimeoutArgsForCall, struct {
@@ -1726,6 +1786,8 @@ func (fake *FakeReadWriter) Invocations() map[string][][]interface{} {
 	defer fake.isLoggedInMutex.RUnlock()
 	fake.isSSLDisabledMutex.RLock()
 	defer fake.isSSLDisabledMutex.RUnlock()
+	fake.isProxyNTLMMutex.RLock()
+	defer fake.isProxyNTLMMutex.RUnlock()
 	fake.isMinAPIVersionMutex.RLock()
 	defer fake.isMinAPIVersionMutex.RUnlock()
 	fake.isMinCLIVersionMutex.RLock()

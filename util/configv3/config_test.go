@@ -704,6 +704,7 @@ var _ = Describe("Config", func() {
 					"wws://doppler.foo.com:443",
 					"https://api.foo.com/routing",
 					true,
+					false,
 				)
 
 				Expect(config.ConfigFile.Target).To(Equal("https://api.foo.com"))

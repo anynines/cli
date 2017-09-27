@@ -31,6 +31,7 @@ type Data struct {
 	UAAOAuthClientSecret     string
 	SSHOAuthClient           string
 	RefreshToken             string
+	ProxyNTLM                bool
 	OrganizationFields       models.OrganizationFields
 	SpaceFields              models.SpaceFields
 	SSLDisabled              bool

@@ -1152,7 +1152,11 @@
     "translation": "CF_NAME login -u name@example.com -p pa55woRD (especificar nome do usuário e senha como argumentos)"
   },
   {
-    "id": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE]\n\n",
+    "id": "CF_NAME login -u name@example.com -p pa55woRd --proxy-ntlm (use NTLM proxy authentication on windows)",
+    "translation": ""
+  },
+  {
+    "id": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE] [--proxy-ntlm]\n\n",
     "translation": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE]\n\n"
   },
   {
@@ -2661,6 +2665,10 @@
   },
   {
     "id": "Enable HTTP proxying for API requests",
+    "translation": ""
+  },
+  {
+    "id": "Enable NTLM proxy authentication",
     "translation": ""
   },
   {
@@ -6824,6 +6832,10 @@
     "translation": "Use '{{.Name}}' para visualizar ou configurar sua organização e espaço de destino"
   },
   {
+    "id": "Use NTLM proxy authentication",
+    "translation": ""
+  },
+  {
     "id": "User provided tags",
     "translation": "Tags fornecidas pelo usuário"
   },
@@ -7502,6 +7514,10 @@
   {
     "id": "provider",
     "translation": "ocupação variada"
+  },
+  {
+    "id": "proxy-ntlm",
+    "translation": ""
   },
   {
     "id": "quota:",

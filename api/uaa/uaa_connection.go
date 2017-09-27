@@ -18,12 +18,18 @@ type UAAConnection struct {
 }
 
 // NewConnection returns a pointer to a new UAA Connection
-func NewConnection(skipSSLValidation bool, dialTimeout time.Duration) *UAAConnection {
+func NewConnection(skipSSLValidation bool, proxyNTLM bool, dialTimeout time.Duration) *UAAConnection {
+	proxySetup := http.DefaultProxySetup
+	if config.ProxyNTLM {
+		proxySetup = ntlm.ProxySetup
+	}
+
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: skipSSLValidation,
 		},
-		Proxy: http.ProxyFromEnvironment,
+		Proxy:     http.ProxyFromEnvironment,
+		ProySetup: proxySetup,
 		DialContext: (&net.Dialer{
 			KeepAlive: 30 * time.Second,
 			Timeout:   dialTimeout,

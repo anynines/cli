@@ -22,6 +22,8 @@ import (
 	"code.cloudfoundry.org/cli/cf/terminal"
 	"code.cloudfoundry.org/cli/cf/trace"
 	"code.cloudfoundry.org/cli/version"
+
+	"github.com/anynines/go-proxy-setup-ntlm/proxysetup/ntlm"
 )
 
 const (
@@ -446,6 +448,12 @@ func (gateway Gateway) doRequest(request *http.Request) (*http.Response, error) 
 }
 
 func makeHTTPTransport(gateway *Gateway) {
+	fmt.Printf("XXX gateway.config.IsProxyNTLM() = %v\n", gateway.config.IsProxyNTLM())
+	proxySetup := http.DefaultProxySetup
+	if gateway.config.IsProxyNTLM() {
+		proxySetup = ntlm.ProxySetup
+	}
+
 	gateway.transport = &http.Transport{
 		Dial: (&net.Dialer{
 			KeepAlive: 30 * time.Second,
@@ -453,6 +461,7 @@ func makeHTTPTransport(gateway *Gateway) {
 		}).Dial,
 		TLSClientConfig: NewTLSConfig(gateway.trustedCerts, gateway.config.IsSSLDisabled()),
 		Proxy:           http.ProxyFromEnvironment,
+		ProxySetup:      proxySetup,
 	}
 }
 

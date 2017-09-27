@@ -49,6 +49,7 @@ func NewClients(config command.Config, ui command.UI, targetCF bool) (*ccv2.Clie
 	_, err := ccClient.TargetCF(ccv2.TargetSettings{
 		URL:               config.Target(),
 		SkipSSLValidation: config.SkipSSLValidation(),
+		ProxyNTLM:         config.ProxyNTLM(),
 		DialTimeout:       config.DialTimeout(),
 	})
 	if err != nil {
@@ -66,6 +67,7 @@ func NewClients(config command.Config, ui command.UI, targetCF bool) (*ccv2.Clie
 		ClientSecret:      config.UAAOAuthClientSecret(),
 		DialTimeout:       config.DialTimeout(),
 		SkipSSLValidation: config.SkipSSLValidation(),
+		ProxyNTLM:         config.ProxyNTLM(),
 	})
 
 	if verbose {

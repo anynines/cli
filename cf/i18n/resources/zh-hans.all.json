@@ -1152,7 +1152,11 @@
     "translation": "CF_NAME login -u name@example.com -p pa55woRD（指定用户名和密码作为自变量）"
   },
   {
-    "id": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE]\n\n",
+    "id": "CF_NAME login -u name@example.com -p pa55woRd --proxy-ntlm (use NTLM proxy authentication on windows)",
+    "translation": ""
+  },
+  {
+    "id": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE] [--proxy-ntlm]\n\n",
     "translation": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE]\n\n"
   },
   {
@@ -2661,6 +2665,10 @@
   },
   {
     "id": "Enable HTTP proxying for API requests",
+    "translation": ""
+  },
+  {
+    "id": "Enable NTLM proxy authentication",
     "translation": ""
   },
   {
@@ -6824,6 +6832,10 @@
     "translation": "使用 '{{.Name}}' 可查看或设置目标组织和空间"
   },
   {
+    "id": "Use NTLM proxy authentication",
+    "translation": ""
+  },
+  {
     "id": "User provided tags",
     "translation": "用户提供的标记"
   },
@@ -7502,6 +7514,10 @@
   {
     "id": "provider",
     "translation": "提供者"
+  },
+  {
+    "id": "proxy-ntlm",
+    "translation": ""
   },
   {
     "id": "quota:",

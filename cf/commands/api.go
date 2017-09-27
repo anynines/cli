@@ -28,6 +28,7 @@ func (cmd API) MetaData() commandregistry.CommandMetadata {
 	fs := make(map[string]flags.FlagSet)
 	fs["unset"] = &flags.BoolFlag{Name: "unset", Usage: T("Remove all api endpoint targeting")}
 	fs["skip-ssl-validation"] = &flags.BoolFlag{Name: "skip-ssl-validation", Usage: T("Skip verification of the API endpoint. Not recommended!")}
+	fs["proxy-ntlm"] = &flags.BoolFlag{Name: "proxy-ntlm", Usage: T("Use NTLM proxy authentication")}
 
 	return commandregistry.CommandMetadata{
 		Name:        "api",
@@ -73,7 +74,7 @@ func (cmd API) Execute(c flags.FlagContext) error {
 
 		cmd.ui.Say(T("Setting api endpoint to {{.Endpoint}}...",
 			map[string]interface{}{"Endpoint": terminal.EntityNameColor(endpoint)}))
-		err := cmd.setAPIEndpoint(endpoint, c.Bool("skip-ssl-validation"), cmd.MetaData().Name)
+		err := cmd.setAPIEndpoint(endpoint, c.Bool("skip-ssl-validation"), c.Bool("proxy-ntlm"), cmd.MetaData().Name)
 		if err != nil {
 			return err
 		}
@@ -85,12 +86,13 @@ func (cmd API) Execute(c flags.FlagContext) error {
 	return nil
 }
 
-func (cmd API) setAPIEndpoint(endpoint string, skipSSL bool, cmdName string) error {
+func (cmd API) setAPIEndpoint(endpoint string, skipSSL bool, proxyNTLM bool, cmdName string) error {
 	if strings.HasSuffix(endpoint, "/") {
 		endpoint = strings.TrimSuffix(endpoint, "/")
 	}
 
 	cmd.config.SetSSLDisabled(skipSSL)
+	cmd.config.SetProxyNTLM(proxyNTLM)
 
 	refresher := coreconfig.APIConfigRefresher{
 		Endpoint:     endpoint,
@@ -102,6 +104,7 @@ func (cmd API) setAPIEndpoint(endpoint string, skipSSL bool, cmdName string) err
 	if err != nil {
 		cmd.config.SetAPIEndpoint("")
 		cmd.config.SetSSLDisabled(false)
+		cmd.config.SetProxyNTLM(false)
 
 		switch typedErr := err.(type) {
 		case *errors.InvalidSSLCert:

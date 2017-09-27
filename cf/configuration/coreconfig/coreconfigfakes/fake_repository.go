@@ -136,6 +136,12 @@ type FakeRepository struct {
 	isSSLDisabledReturns     struct {
 		result1 bool
 	}
+	IsProxyNTLMStub        func() bool
+	isProxyNTLMMutex       sync.RWMutex
+	isProxyNTLMArgsForCall []struct{}
+	isProxyNTLMReturns     struct {
+		result1 bool
+	}
 	IsMinAPIVersionStub        func(semver.Version) bool
 	isMinAPIVersionMutex       sync.RWMutex
 	isMinAPIVersionArgsForCall []struct {
@@ -283,6 +289,12 @@ type FakeRepository struct {
 	setSSLDisabledArgsForCall []struct {
 		arg1 bool
 	}
+	SetProxyNTLMStub        func(bool)
+	setProxyNTLMMutex       sync.RWMutex
+	setProxyNTLMArgsForCall []struct {
+		arg1 bool
+	}
+
 	SetAsyncTimeoutStub        func(uint)
 	setAsyncTimeoutMutex       sync.RWMutex
 	setAsyncTimeoutArgsForCall []struct {
@@ -846,6 +858,31 @@ func (fake *FakeRepository) IsSSLDisabledCallCount() int {
 func (fake *FakeRepository) IsSSLDisabledReturns(result1 bool) {
 	fake.IsSSLDisabledStub = nil
 	fake.isSSLDisabledReturns = struct {
+		result1 bool
+	}{result1}
+}
+
+func (fake *FakeRepository) IsProxyNTLM() bool {
+	fake.isProxyNTLMMutex.Lock()
+	fake.isProxyNTLMArgsForCall = append(fake.isProxyNTLMArgsForCall, struct{}{})
+	fake.recordInvocation("IsProxyNTLM", []interface{}{})
+	fake.isProxyNTLMMutex.Unlock()
+	if fake.IsProxyNTLMStub != nil {
+		return fake.IsProxyNTLMStub()
+	} else {
+		return fake.isProxyNTLMReturns.result1
+	}
+}
+
+func (fake *FakeRepository) IsProxyNTLMCallCount() int {
+	fake.isProxyNTLMMutex.RLock()
+	defer fake.isProxyNTLMMutex.RUnlock()
+	return len(fake.isProxyNTLMArgsForCall)
+}
+
+func (fake *FakeRepository) IsProxyNTLMReturns(result1 bool) {
+	fake.IsProxyNTLMStub = nil
+	fake.isProxyNTLMReturns = struct {
 		result1 bool
 	}{result1}
 }
@@ -1516,6 +1553,30 @@ func (fake *FakeRepository) SetSSLDisabledArgsForCall(i int) bool {
 	return fake.setSSLDisabledArgsForCall[i].arg1
 }
 
+func (fake *FakeRepository) SetProxyNTLM(arg1 bool) {
+	fake.setProxyNTLMMutex.Lock()
+	fake.setProxyNTLMArgsForCall = append(fake.setProxyNTLMArgsForCall, struct {
+		arg1 bool
+	}{arg1})
+	fake.recordInvocation("SetProxyNTLM", []interface{}{arg1})
+	fake.setProxyNTLMMutex.Unlock()
+	if fake.SetProxyNTLMStub != nil {
+		fake.SetProxyNTLMStub(arg1)
+	}
+}
+
+func (fake *FakeRepository) SetProxyNTLMCallCount() int {
+	fake.setProxyNTLMMutex.RLock()
+	defer fake.setProxyNTLMMutex.RUnlock()
+	return len(fake.setProxyNTLMArgsForCall)
+}
+
+func (fake *FakeRepository) SetProxyNTLMArgsForCall(i int) bool {
+	fake.setProxyNTLMMutex.RLock()
+	defer fake.setProxyNTLMMutex.RUnlock()
+	return fake.setProxyNTLMArgsForCall[i].arg1
+}
+
 func (fake *FakeRepository) SetAsyncTimeout(arg1 uint) {
 	fake.setAsyncTimeoutMutex.Lock()
 	fake.setAsyncTimeoutArgsForCall = append(fake.setAsyncTimeoutArgsForCall, struct {
@@ -1745,6 +1806,8 @@ func (fake *FakeRepository) Invocations() map[string][][]interface{} {
 	defer fake.isLoggedInMutex.RUnlock()
 	fake.isSSLDisabledMutex.RLock()
 	defer fake.isSSLDisabledMutex.RUnlock()
+	fake.isProxyNTLMMutex.RLock()
+	defer fake.isProxyNTLMMutex.RUnlock()
 	fake.isMinAPIVersionMutex.RLock()
 	defer fake.isMinAPIVersionMutex.RUnlock()
 	fake.isMinCLIVersionMutex.RLock()
@@ -1799,6 +1862,8 @@ func (fake *FakeRepository) Invocations() map[string][][]interface{} {
 	defer fake.setSpaceFieldsMutex.RUnlock()
 	fake.setSSLDisabledMutex.RLock()
 	defer fake.setSSLDisabledMutex.RUnlock()
+	fake.setProxyNTLMMutex.RLock()
+	defer fake.setProxyNTLMMutex.RUnlock()
 	fake.setAsyncTimeoutMutex.RLock()
 	defer fake.setAsyncTimeoutMutex.RUnlock()
 	fake.setTraceMutex.RLock()

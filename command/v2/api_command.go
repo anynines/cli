@@ -20,6 +20,7 @@ type APIActor interface {
 type ApiCommand struct {
 	OptionalArgs      flag.APITarget `positional-args:"yes"`
 	SkipSSLValidation bool           `long:"skip-ssl-validation" description:"Skip verification of the API endpoint. Not recommended!"`
+	ProxyNTLM         bool           `long:"proxy-ntlm" description:"Use NTLM proxy authentication"`
 	Unset             bool           `long:"unset" description:"Remove all api endpoint targeting"`
 	usage             interface{}    `usage:"CF_NAME api [URL]"`
 	relatedCommands   interface{}    `related_commands:"auth, login, target"`
@@ -91,6 +92,7 @@ func (cmd *ApiCommand) setAPI() error {
 	_, err := cmd.Actor.SetTarget(cmd.Config, v2action.TargetSettings{
 		URL:               apiURL,
 		SkipSSLValidation: cmd.SkipSSLValidation,
+		ProxyNTLM:         cmd.ProxyNTLM,
 		DialTimeout:       cmd.Config.DialTimeout(),
 	})
 	if err != nil {

@@ -211,6 +211,15 @@ type FakeConfig struct {
 	pollingIntervalReturnsOnCall map[int]struct {
 		result1 time.Duration
 	}
+	ProxyNTLMStub        func() bool
+	proxyNTLMMutex       sync.RWMutex
+	proxyNTLMArgsForCall []struct{}
+	proxyNTLMReturns     struct {
+		result1 bool
+	}
+	proxyNTLMReturnsOnCall map[int]struct {
+		result1 bool
+	}
 	RefreshTokenStub        func() string
 	refreshTokenMutex       sync.RWMutex
 	refreshTokenArgsForCall []struct{}
@@ -248,7 +257,7 @@ type FakeConfig struct {
 		name     string
 		allowSSH bool
 	}
-	SetTargetInformationStub        func(api string, apiVersion string, auth string, minCLIVersion string, doppler string, routing string, skipSSLValidation bool)
+	SetTargetInformationStub        func(api string, apiVersion string, auth string, minCLIVersion string, doppler string, routing string, skipSSLValidation bool, proxyNTLM bool)
 	setTargetInformationMutex       sync.RWMutex
 	setTargetInformationArgsForCall []struct {
 		api               string
@@ -258,6 +267,7 @@ type FakeConfig struct {
 		doppler           string
 		routing           string
 		skipSSLValidation bool
+		proxyNTLM         bool
 	}
 	SetTokenInformationStub        func(accessToken string, refreshToken string, sshOAuthClient string)
 	setTokenInformationMutex       sync.RWMutex
@@ -1419,7 +1429,7 @@ func (fake *FakeConfig) SetSpaceInformationArgsForCall(i int) (string, string, b
 	return fake.setSpaceInformationArgsForCall[i].guid, fake.setSpaceInformationArgsForCall[i].name, fake.setSpaceInformationArgsForCall[i].allowSSH
 }
 
-func (fake *FakeConfig) SetTargetInformation(api string, apiVersion string, auth string, minCLIVersion string, doppler string, routing string, skipSSLValidation bool) {
+func (fake *FakeConfig) SetTargetInformation(api string, apiVersion string, auth string, minCLIVersion string, doppler string, routing string, skipSSLValidation bool, proxyNTLM bool) {
 	fake.setTargetInformationMutex.Lock()
 	fake.setTargetInformationArgsForCall = append(fake.setTargetInformationArgsForCall, struct {
 		api               string
@@ -1429,11 +1439,12 @@ func (fake *FakeConfig) SetTargetInformation(api string, apiVersion string, auth
 		doppler           string
 		routing           string
 		skipSSLValidation bool
-	}{api, apiVersion, auth, minCLIVersion, doppler, routing, skipSSLValidation})
-	fake.recordInvocation("SetTargetInformation", []interface{}{api, apiVersion, auth, minCLIVersion, doppler, routing, skipSSLValidation})
+		proxyNTLM         bool
+	}{api, apiVersion, auth, minCLIVersion, doppler, routing, skipSSLValidation, proxyNTLM})
+	fake.recordInvocation("SetTargetInformation", []interface{}{api, apiVersion, auth, minCLIVersion, doppler, routing, skipSSLValidation, proxyNTLM})
 	fake.setTargetInformationMutex.Unlock()
 	if fake.SetTargetInformationStub != nil {
-		fake.SetTargetInformationStub(api, apiVersion, auth, minCLIVersion, doppler, routing, skipSSLValidation)
+		fake.SetTargetInformationStub(api, apiVersion, auth, minCLIVersion, doppler, routing, skipSSLValidation, proxyNTLM)
 	}
 }
 
@@ -1443,10 +1454,10 @@ func (fake *FakeConfig) SetTargetInformationCallCount() int {
 	return len(fake.setTargetInformationArgsForCall)
 }
 
-func (fake *FakeConfig) SetTargetInformationArgsForCall(i int) (string, string, string, string, string, string, bool) {
+func (fake *FakeConfig) SetTargetInformationArgsForCall(i int) (string, string, string, string, string, string, bool, bool) {
 	fake.setTargetInformationMutex.RLock()
 	defer fake.setTargetInformationMutex.RUnlock()
-	return fake.setTargetInformationArgsForCall[i].api, fake.setTargetInformationArgsForCall[i].apiVersion, fake.setTargetInformationArgsForCall[i].auth, fake.setTargetInformationArgsForCall[i].minCLIVersion, fake.setTargetInformationArgsForCall[i].doppler, fake.setTargetInformationArgsForCall[i].routing, fake.setTargetInformationArgsForCall[i].skipSSLValidation
+	return fake.setTargetInformationArgsForCall[i].api, fake.setTargetInformationArgsForCall[i].apiVersion, fake.setTargetInformationArgsForCall[i].auth, fake.setTargetInformationArgsForCall[i].minCLIVersion, fake.setTargetInformationArgsForCall[i].doppler, fake.setTargetInformationArgsForCall[i].routing, fake.setTargetInformationArgsForCall[i].skipSSLValidation, fake.setTargetInformationArgsForCall[i].proxyNTLM
 }
 
 func (fake *FakeConfig) SetTokenInformation(accessToken string, refreshToken string, sshOAuthClient string) {
@@ -1535,6 +1546,46 @@ func (fake *FakeConfig) SkipSSLValidationReturnsOnCall(i int, result1 bool) {
 		})
 	}
 	fake.skipSSLValidationReturnsOnCall[i] = struct {
+		result1 bool
+	}{result1}
+}
+
+func (fake *FakeConfig) ProxyNTLM() bool {
+	fake.proxyNTLMMutex.Lock()
+	ret, specificReturn := fake.proxyNTLMReturnsOnCall[len(fake.proxyNTLMArgsForCall)]
+	fake.proxyNTLMArgsForCall = append(fake.proxyNTLMArgsForCall, struct{}{})
+	fake.recordInvocation("ProxyNTLM", []interface{}{})
+	fake.proxyNTLMMutex.Unlock()
+	if fake.ProxyNTLMStub != nil {
+		return fake.ProxyNTLMStub()
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fake.proxyNTLMReturns.result1
+}
+
+func (fake *FakeConfig) ProxyNTLMCallCount() int {
+	fake.proxyNTLMMutex.RLock()
+	defer fake.proxyNTLMMutex.RUnlock()
+	return len(fake.proxyNTLMArgsForCall)
+}
+
+func (fake *FakeConfig) ProxyNTLMReturns(result1 bool) {
+	fake.ProxyNTLMStub = nil
+	fake.proxyNTLMReturns = struct {
+		result1 bool
+	}{result1}
+}
+
+func (fake *FakeConfig) ProxyNTLMReturnsOnCall(i int, result1 bool) {
+	fake.ProxyNTLMStub = nil
+	if fake.proxyNTLMReturnsOnCall == nil {
+		fake.proxyNTLMReturnsOnCall = make(map[int]struct {
+			result1 bool
+		})
+	}
+	fake.proxyNTLMReturnsOnCall[i] = struct {
 		result1 bool
 	}{result1}
 }

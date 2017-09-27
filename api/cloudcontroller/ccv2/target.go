@@ -24,6 +24,8 @@ type TargetSettings struct {
 	// be used only for testing.
 	SkipSSLValidation bool
 
+	ProxyNTLM bool
+
 	// URL is a fully qualified URL to the Cloud Controller API.
 	URL string
 }
@@ -37,6 +39,7 @@ func (client *Client) TargetCF(settings TargetSettings) (Warnings, error) {
 	client.connection = cloudcontroller.NewConnection(cloudcontroller.Config{
 		DialTimeout:       settings.DialTimeout,
 		SkipSSLValidation: settings.SkipSSLValidation,
+		ProxyNTLM:         settings.ProxyNTLM,
 	})
 
 	for _, wrapper := range client.wrappers {

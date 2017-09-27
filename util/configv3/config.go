@@ -293,6 +293,7 @@ type CFConfig struct {
 	TargetedOrganization     Organization       `json:"OrganizationFields"`
 	TargetedSpace            Space              `json:"SpaceFields"`
 	SkipSSLValidation        bool               `json:"SSLDisabled"`
+	ProxyNTLM                bool               `json:"ProxyNTLM"`
 	AsyncTimeout             int                `json:"AsyncTimeout"`
 	Trace                    string             `json:"Trace"`
 	ColorEnabled             string             `json:"ColorEnabled"`
@@ -395,6 +396,12 @@ func (config *Config) AccessToken() string {
 // RefreshToken returns the refresh token for getting a new access token
 func (config *Config) RefreshToken() string {
 	return config.ConfigFile.RefreshToken
+}
+
+// ProxyNTLM returns whether or not to use NTLM proxy authentication when
+// targeting an API endpoint
+func (config *Config) ProxyNTLM() bool {
+	return config.ConfigFile.ProxyNTLM
 }
 
 // SSHOAuthClient returns the OAuth client id used for SSHing into
@@ -635,7 +642,7 @@ func (config *Config) SetSpaceInformation(guid string, name string, allowSSH boo
 
 // SetTargetInformation sets the currently targeted CC API and related other
 // related API URLs
-func (config *Config) SetTargetInformation(api string, apiVersion string, auth string, minCLIVersion string, doppler string, routing string, skipSSLValidation bool) {
+func (config *Config) SetTargetInformation(api string, apiVersion string, auth string, minCLIVersion string, doppler string, routing string, skipSSLValidation bool, proxyNTLM bool) {
 	config.ConfigFile.Target = api
 	config.ConfigFile.APIVersion = apiVersion
 	config.ConfigFile.AuthorizationEndpoint = auth
@@ -643,6 +650,7 @@ func (config *Config) SetTargetInformation(api string, apiVersion string, auth s
 	config.ConfigFile.DopplerEndpoint = doppler
 	config.ConfigFile.RoutingEndpoint = routing
 	config.ConfigFile.SkipSSLValidation = skipSSLValidation
+	config.ConfigFile.ProxyNTLM = proxyNTLM
 
 	config.UnsetOrganizationInformation()
 	config.UnsetSpaceInformation()

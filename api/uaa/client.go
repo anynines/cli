@@ -49,6 +49,8 @@ type Config struct {
 	// In this mode, TLS is susceptible to man-in-the-middle attacks. This should
 	// be used only for testing.
 	SkipSSLValidation bool
+
+	ProxyNTLM bool
 }
 
 // NewClient returns a new UAA Client with the provided configuration
@@ -65,7 +67,7 @@ func NewClient(config Config) *Client {
 		id:     config.ClientID,
 		secret: config.ClientSecret,
 
-		connection: NewConnection(config.SkipSSLValidation, config.DialTimeout),
+		connection: NewConnection(config.SkipSSLValidation, config.ProxyNTLM, config.DialTimeout),
 		userAgent:  userAgent,
 	}
 	client.WrapConnection(NewErrorWrapper())

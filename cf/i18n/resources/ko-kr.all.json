@@ -1152,7 +1152,11 @@
     "translation": "CF_NAME login -u name@example.com -p pa55woRD(사용자 이름과 비밀번호를 인수로 지정)"
   },
   {
-    "id": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE]\n\n",
+    "id": "CF_NAME login -u name@example.com -p pa55woRd --proxy-ntlm (use NTLM proxy authentication on windows)",
+    "translation": ""
+  },
+  {
+    "id": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE] [--proxy-ntlm]\n\n",
     "translation": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE]\n\n"
   },
   {
@@ -2661,6 +2665,10 @@
   },
   {
     "id": "Enable HTTP proxying for API requests",
+    "translation": ""
+  },
+  {
+    "id": "Enable NTLM proxy authentication",
     "translation": ""
   },
   {
@@ -6824,6 +6832,10 @@
     "translation": "대상 조직과 영역을 보거나 설정하려면 '{{.Name}}'을(를) 사용하십시오."
   },
   {
+    "id": "Use NTLM proxy authentication",
+    "translation": ""
+  },
+  {
     "id": "User provided tags",
     "translation": "사용자 제공 태그"
   },
@@ -7502,6 +7514,10 @@
   {
     "id": "provider",
     "translation": "제공자"
+  },
+  {
+    "id": "proxy-ntlm",
+    "translation": ""
   },
   {
     "id": "quota:",

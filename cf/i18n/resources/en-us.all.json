@@ -1152,12 +1152,16 @@
     "translation": "CF_NAME login -u name@example.com -p pa55woRD (specify username and password as arguments)"
   },
   {
-    "id": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE]\n\n",
-    "translation": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE]\n\n"
+    "id": "CF_NAME login -u name@example.com -p pa55woRd --proxy-ntlm (use NTLM proxy authentication on windows)",
+    "translation": "CF_NAME login -u name@example.com -p pa55woRd --proxy-ntlm (use NTLM proxy authentication on windows)"
   },
   {
-    "id": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE]\\n\\nWARNING:\\n   Providing your password as a command line option is highly discouraged\\n   Your password may be visible to others and may be recorded in your shell history\\n\\nEXAMPLES:\\n   CF_NAME login (omit username and password to login interactively -- CF_NAME will prompt for both)\\n   CF_NAME login -u name@example.com -p pa55woRD (specify username and password as arguments)\\n   CF_NAME login -u name@example.com -p \\\"my password\\\" (use quotes for passwords with a space)\\n   CF_NAME login -u name@example.com -p \\\"\\\\\\\"password\\\\\\\"\\\" (escape quotes if used in password)\\n   CF_NAME login --sso (CF_NAME will provide a url to obtain a one-time passcode to login)",
-    "translation": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE]\\n\\nWARNING:\\n   Providing your password as a command line option is highly discouraged\\n   Your password may be visible to others and may be recorded in your shell history\\n\\nEXAMPLES:\\n   CF_NAME login (omit username and password to login interactively -- CF_NAME will prompt for both)\\n   CF_NAME login -u name@example.com -p pa55woRD (specify username and password as arguments)\\n   CF_NAME login -u name@example.com -p \\\"my password\\\" (use quotes for passwords with a space)\\n   CF_NAME login -u name@example.com -p \\\"\\\\\\\"password\\\\\\\"\\\" (escape quotes if used in password)\\n   CF_NAME login --sso (CF_NAME will provide a url to obtain a one-time passcode to login)"
+    "id": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE] [--proxy-ntlm]\n\n",
+    "translation": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE] [--proxy-ntlm]\n\n"
+  },
+  {
+    "id": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE] [--proxy-ntlm]\\n\\nWARNING:\\n   Providing your password as a command line option is highly discouraged\\n   Your password may be visible to others and may be recorded in your shell history\\n\\nEXAMPLES:\\n   CF_NAME login (omit username and password to login interactively -- CF_NAME will prompt for both)\\n   CF_NAME login -u name@example.com -p pa55woRD (specify username and password as arguments)\\n   CF_NAME login -u name@example.com -p \\\"my password\\\" (use quotes for passwords with a space)\\n   CF_NAME login -u name@example.com -p \\\"\\\\\\\"password\\\\\\\"\\\" (escape quotes if used in password)\\n   CF_NAME login -u name@example.com -p pa55woRd --proxy-ntlm (use NTLM proxy authentication on windows)\\n   CF_NAME login --sso (CF_NAME will provide a url to obtain a one-time passcode to login)",
+    "translation": "CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE] [--proxy-ntlm]\\n\\nWARNING:\\n   Providing your password as a command line option is highly discouraged\\n   Your password may be visible to others and may be recorded in your shell history\\n\\nEXAMPLES:\\n   CF_NAME login (omit username and password to login interactively -- CF_NAME will prompt for both)\\n   CF_NAME login -u name@example.com -p pa55woRD (specify username and password as arguments)\\n   CF_NAME login -u name@example.com -p \\\"my password\\\" (use quotes for passwords with a space)\\n   CF_NAME login -u name@example.com -p \\\"\\\\\\\"password\\\\\\\"\\\" (escape quotes if used in password)\\n   CF_NAME login -u name@example.com -p pa55woRd --proxy-ntlm (use NTLM proxy authentication on windows)\\n   CF_NAME login --sso (CF_NAME will provide a url to obtain a one-time passcode to login)"
   },
   {
     "id": "CF_NAME logout",
@@ -2662,6 +2666,10 @@
   {
     "id": "Enable HTTP proxying for API requests",
     "translation": ""
+  },
+  {
+    "id": "Enable NTLM proxy authentication",
+    "translation": "Enable NTLM proxy authentication"
   },
   {
     "id": "Enable access for a specified organization",
@@ -6824,6 +6832,10 @@
     "translation": "Use '{{.Name}}' to view or set your target org and space"
   },
   {
+    "id": "Use NTLM proxy authentication",
+    "translation": "use NTLM proxy authentication"
+  },
+  {
     "id": "User provided tags",
     "translation": "User provided tags"
   },
@@ -7502,6 +7514,10 @@
   {
     "id": "provider",
     "translation": "provider"
+  },
+  {
+    "id": "proxy-ntlm",
+    "translation": "proxy-ntlm"
   },
   {
     "id": "quota:",

@@ -13,6 +13,8 @@ import (
 	"time"
 
 	"code.cloudfoundry.org/cli/api/cloudcontroller/ccerror"
+
+	"github.com/anynines/go-proxy-setup-ntlm/proxysetup/ntlm"
 )
 
 // CloudControllerConnection represents a connection to the Cloud Controller
@@ -26,16 +28,23 @@ type CloudControllerConnection struct {
 type Config struct {
 	DialTimeout       time.Duration
 	SkipSSLValidation bool
+	ProxyNTLM         bool
 }
 
 // NewConnection returns a new CloudControllerConnection with provided
 // configuration.
 func NewConnection(config Config) *CloudControllerConnection {
+	proxySetup := http.DefaultProxySetup
+	if config.ProxyNTLM {
+		proxySetup = ntlm.ProxySetup
+	}
+
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: config.SkipSSLValidation,
 		},
 		Proxy: http.ProxyFromEnvironment,
+		ProxySetup: proxySetup,
 		DialContext: (&net.Dialer{
 			KeepAlive: 30 * time.Second,
 			Timeout:   config.DialTimeout,

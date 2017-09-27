@@ -43,13 +43,14 @@ func (cmd *Login) MetaData() commandregistry.CommandMetadata {
 	fs["sso"] = &flags.BoolFlag{Name: "sso", Usage: T("Prompt for a one-time passcode to login")}
 	fs["sso-passcode"] = &flags.StringFlag{Name: "sso-passcode", Usage: T("One-time passcode")}
 	fs["skip-ssl-validation"] = &flags.BoolFlag{Name: "skip-ssl-validation", Usage: T("Skip verification of the API endpoint. Not recommended!")}
+	fs["proxy-ntlm"] = &flags.BoolFlag{Name: "proxy-ntlm", Usage: T("Use NTLM proxy authentication")}
 
 	return commandregistry.CommandMetadata{
 		Name:        "login",
 		ShortName:   "l",
 		Description: T("Log user in"),
 		Usage: []string{
-			T("CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE]\n\n"),
+			T("CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE] [--proxy-ntlm]\n\n"),
 			terminal.WarningColor(T("WARNING:\n   Providing your password as a command line option is highly discouraged\n   Your password may be visible to others and may be recorded in your shell history")),
 		},
 		Examples: []string{
@@ -57,6 +58,7 @@ func (cmd *Login) MetaData() commandregistry.CommandMetadata {
 			T("CF_NAME login -u name@example.com -p pa55woRD (specify username and password as arguments)"),
 			T("CF_NAME login -u name@example.com -p \"my password\" (use quotes for passwords with a space)"),
 			T("CF_NAME login -u name@example.com -p \"\\\"password\\\"\" (escape quotes if used in password)"),
+			T("CF_NAME login -u name@example.com -p pa55woRd --proxy-ntlm (use NTLM proxy authentication on windows)"),
 			T("CF_NAME login --sso (CF_NAME will provide a url to obtain a one-time passcode to login)"),
 		},
 		Flags: fs,
@@ -81,14 +83,14 @@ func (cmd *Login) SetDependency(deps commandregistry.Dependency, pluginCall bool
 func (cmd *Login) Execute(c flags.FlagContext) error {
 	cmd.config.ClearSession()
 
-	endpoint, skipSSL := cmd.decideEndpoint(c)
+	endpoint, skipSSL, proxyNTLM := cmd.decideEndpoint(c)
 
 	api := API{
 		ui:           cmd.ui,
 		config:       cmd.config,
 		endpointRepo: cmd.endpointRepo,
 	}
-	err := api.setAPIEndpoint(endpoint, skipSSL, cmd.MetaData().Name)
+	err := api.setAPIEndpoint(endpoint, skipSSL, proxyNTLM, cmd.MetaData().Name)
 	if err != nil {
 		return err
 	}
@@ -138,12 +140,14 @@ func (cmd *Login) Execute(c flags.FlagContext) error {
 	return nil
 }
 
-func (cmd Login) decideEndpoint(c flags.FlagContext) (string, bool) {
+func (cmd Login) decideEndpoint(c flags.FlagContext) (string, bool, bool) {
 	endpoint := c.String("a")
 	skipSSL := c.Bool("skip-ssl-validation")
+	proxyNTLM := c.Bool("proxy-ntlm")
 	if endpoint == "" {
 		endpoint = cmd.config.APIEndpoint()
 		skipSSL = cmd.config.IsSSLDisabled() || skipSSL
+		proxyNTLM = cmd.config.IsProxyNTLM() || proxyNTLM
 	}
 
 	if endpoint == "" {
@@ -152,7 +156,15 @@ func (cmd Login) decideEndpoint(c flags.FlagContext) (string, bool) {
 		cmd.ui.Say(T("API endpoint: {{.Endpoint}}", map[string]interface{}{"Endpoint": terminal.EntityNameColor(endpoint)}))
 	}
 
-	return endpoint, skipSSL
+	return endpoint, skipSSL, proxyNTLM
+}
+
+func (cmd Login) setProxyNTLM(c flags.FlagContext) {
+	proxyNTLM := c.Bool("proxy-ntlm")
+	cmd.config.SetProxyNTLM(proxyNTLM)
+	if proxyNTLM {
+		cmd.ui.Say(T("Using NTLM proxy for future requests...\n"))
+	}
 }
 
 func (cmd Login) authenticateSSO(c flags.FlagContext) error {
