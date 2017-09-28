@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"code.cloudfoundry.org/cli/api/cloudcontroller/ccerror"
+	"code.cloudfoundry.org/cli/cf/net/http/proxysetup"
 )
 
 // CloudControllerConnection represents a connection to the Cloud Controller
@@ -35,7 +36,8 @@ func NewConnection(config Config) *CloudControllerConnection {
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: config.SkipSSLValidation,
 		},
-		Proxy: http.ProxyFromEnvironment,
+		Proxy:      http.ProxyFromEnvironment,
+		ProxySetup: proxysetup.FromEnvironment(),
 		DialContext: (&net.Dialer{
 			KeepAlive: 30 * time.Second,
 			Timeout:   config.DialTimeout,

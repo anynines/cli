@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+
+	"code.cloudfoundry.org/cli/cf/net/http/proxysetup"
 )
 
 // UAAConnection represents the connection to UAA
@@ -23,7 +25,8 @@ func NewConnection(skipSSLValidation bool, dialTimeout time.Duration) *UAAConnec
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: skipSSLValidation,
 		},
-		Proxy: http.ProxyFromEnvironment,
+		Proxy:      http.ProxyFromEnvironment,
+		ProxySetup: proxysetup.FromEnvironment(),
 		DialContext: (&net.Dialer{
 			KeepAlive: 30 * time.Second,
 			Timeout:   dialTimeout,

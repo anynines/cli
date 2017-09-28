@@ -13,6 +13,7 @@ import (
 	"code.cloudfoundry.org/cli/cf/errors"
 	. "code.cloudfoundry.org/cli/cf/i18n"
 	"code.cloudfoundry.org/cli/cf/net"
+	"code.cloudfoundry.org/cli/cf/net/http/proxysetup"
 )
 
 //go:generate counterfeiter . TokenRefresher
@@ -61,6 +62,7 @@ func (uaa UAARepository) Authorize(token string) (string, error) {
 				InsecureSkipVerify: uaa.config.IsSSLDisabled(),
 			},
 			Proxy:               http.ProxyFromEnvironment,
+			ProxySetup:          proxysetup.FromEnvironment(),
 			TLSHandshakeTimeout: 10 * time.Second,
 		},
 	}

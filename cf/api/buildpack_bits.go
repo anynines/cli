@@ -22,6 +22,7 @@ import (
 	. "code.cloudfoundry.org/cli/cf/i18n"
 	"code.cloudfoundry.org/cli/cf/models"
 	"code.cloudfoundry.org/cli/cf/net"
+	"code.cloudfoundry.org/cli/cf/net/http/proxysetup"
 	"code.cloudfoundry.org/gofileutils/fileutils"
 )
 
@@ -228,6 +229,7 @@ func (repo CloudControllerBuildpackBitsRepository) downloadBuildpack(url string,
 				Dial:            (&gonet.Dialer{Timeout: 5 * time.Second}).Dial,
 				TLSClientConfig: &tls.Config{RootCAs: certPool},
 				Proxy:           http.ProxyFromEnvironment,
+				ProxySetup:      proxysetup.FromEnvironment(),
 			},
 		}
 
